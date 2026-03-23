@@ -177,7 +177,7 @@ img:hover ~ .description {
   align-items: flex-start;
   justify-content: left;
   margin-left: 20px;
-  width: 90px;
+  width: 100px;
   height: 40px;
 }
 
@@ -303,7 +303,8 @@ img:hover ~ .description {
   margin: 0px 3px 0px 3px;
 }
 
-#current-basket {
+#current-basket,
+#current-orders-dropdown {
   margin: auto;
   position: absolute;
   left: 0;
@@ -324,6 +325,13 @@ img:hover ~ .description {
   visibility: visible;
 }
 
+.customer-orders {
+  font-weight: bold;
+  background: var(--off-white);
+  border-radius: 5px;
+  width: 300px;
+}
+
 #current-basket-items > div {
   margin-top: -10px;
 }
@@ -338,6 +346,7 @@ img:hover ~ .description {
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
     rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+  font-weight: bold;
 }
 
 .discard-btn {
@@ -364,6 +373,26 @@ img:hover ~ .description {
   margin-top: -55px;
 }
 
+#checkout-btn {
+  color: var(--border-grey);
+  border: none;
+  background: var(--white);
+  font-weight: bold;
+  font-family: "Playfair Display";
+}
+
+a:hover > #checkout-btn {
+  background: var(--off-white);
+  color: var(--laurel);
+}
+
+a:hover > #checkout-btn:hover {
+  border: none;
+  background: var(--laurel);
+  color: var(--white);
+  border-radius: 4px;
+}
+
 #sig {
   color: var(--laurel);
   margin: auto;
@@ -375,4 +404,5 @@ img:hover ~ .description {
   margin-top: 20px;
   margin-bottom: 7px;
   font-size: 0.7em;
+  z-index: 20;
 }

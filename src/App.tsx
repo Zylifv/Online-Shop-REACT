@@ -4,6 +4,7 @@ import { products } from "./products";
 
 let initialValues = products;
 let basket: any = [];
+let orders: any = [];
 
 export default function List() {
   const [itemTotal, setItemTotal] = useState(0);
@@ -17,13 +18,14 @@ export default function List() {
   const [currBasket, updateBasket] = useState([] as any[]);
   const [selectedSize, setSelectedSize] = useState("");
   const [vis, setVis] = useState(false);
+  const [ordersVis, setOrdersVis] = useState(false);
   const [basketTotal, setBasketTotal] = useState(0);
-  console.log(currBasket);
 
   useEffect(() => {
     console.log("Current size: ", selectedSize);
   }, [selectedSize]);
 
+  //updates all relevant info when the user clicks "add to basket" button and prevents user from adding items without choosing a size
   const handleClick = () => {
     if (selectedSize !== "") {
       setItemTotal(itemTotal + 1);
@@ -36,11 +38,16 @@ export default function List() {
     setSelectedSize("");
   };
 
+  //generates a random order number
+  const orderNumGenerator = () => {
+    return Math.floor(Math.random() * (999999 - 11111) + 11111);
+  };
+
   //creates a paragraph element that gets put into the basket Div so the user can see whats in their basket
   const Divs = () => {
     const basketDivs = currBasket.map((item, i) => (
       <p key={i}>
-        {item.product}: Size: {item.size} - Price: ${item.price}
+        {item.product}: Size: {item.size} - Price: £{item.price}
         <button className="discard-btn" id={`${item.code}-btn${i}`}>
           x
         </button>
@@ -49,11 +56,25 @@ export default function List() {
     return <div>{basketDivs}</div>;
   };
 
+  //creates a paragraph element that gets put into the orders Div so the user can see what orders are outstanding
+  const Orders = () => {
+    const currentOrders = orders.map((ord: any, i: number) => (
+      <p key={i} className="customer-orders">
+        {i + 1}: #{ord}
+      </p>
+    ));
+    return <div>{currentOrders}</div>;
+  };
+
   //displays each item the use currently has in their basket
   const displayBasket = () => {
     if (vis) {
       if (basket.length <= 0) {
-        return "You currently have no item(s) in your basket.";
+        return (
+          <p className="customer-orders">
+            You do not currently have any item(s) in your basket.
+          </p>
+        );
       } else {
         return <Divs />;
       }
@@ -62,7 +83,36 @@ export default function List() {
 
   //WIP - will update orders
   const displayOrders = () => {
-    alert("You currently have 0 orders.");
+    if (ordersVis) {
+      if (orders.length <= 0) {
+        return (
+          <p className="customer-orders">
+            You do not currently have any orders.
+          </p>
+        );
+      } else {
+        return <Orders />;
+      }
+    }
+  };
+
+  //allows user to complete an order and resets the page accordingly
+  const completeOrder = () => {
+    let currOrderNum = orderNumGenerator();
+    if (basketTotal <= 0) {
+      alert(
+        "You must have at least one item in your basket to place an order."
+      );
+      return;
+    } else {
+      alert(`Order accepted! Your order number: #${currOrderNum}`);
+      orders.push(currOrderNum);
+      basket.length = 0;
+      setBasketTotal(0);
+      setItemTotal(0);
+      updateBasket(basket);
+      return;
+    }
   };
 
   //shows the user how much their order currently totals up to
@@ -90,7 +140,7 @@ export default function List() {
     <div className="display-box" id={(prod as any).code} key={prod.code}>
       <img src={prod.url} alt={prod.product} />
       <p className="display-box-text">
-        Price: ${prod.price} Quantity: {prod.quantity}
+        Price: £{prod.price} Quantity: {prod.quantity}
       </p>
       <div className="sizes-selection-box">
         <p className="sizes-text">Sizes:</p>
@@ -180,7 +230,13 @@ export default function List() {
           <a href="#" id="browse-btn">
             Browse products
           </a>
-          <a href="#orders" onClick={displayOrders}>
+          <a
+            href="#orders"
+            onClick={() => {
+              setOrdersVis(!ordersVis);
+              displayOrders;
+            }}
+          >
             Your orders
           </a>
           <a href="#contact-us">Contact</a>
@@ -195,6 +251,11 @@ export default function List() {
             Basket
           </a>
           <p id="basket-total">{itemTotal}</p>
+          <a id="checkout">
+            <button id="checkout-btn" onClick={() => completeOrder()}>
+              Checkout
+            </button>
+          </a>
         </div>
       </nav>
       <div id="wrap">
@@ -207,6 +268,14 @@ export default function List() {
             </div>
           )}
           <div className="product-div">{productsList}</div>
+        </>
+        <>
+          {ordersVis && (
+            <div id="current-orders-dropdown">
+              <h3>Current Orders:</h3>
+              <div id="current-orders-list">{displayOrders()}</div>
+            </div>
+          )}
         </>
       </div>
       <section id="contact-us">
