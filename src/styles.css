@@ -11,15 +11,48 @@
   --laurel: #7c876a;
 }
 
-@media only screen and (max-width: 600px) {
-  .display-box {
-    position: relative;
-    left: -40px;
-    transform: scale(0.9);
-    max-width: 450px;
+@media only screen and (min-width: 410px) {
+  nav {
+    min-height: 100px;
   }
   .description {
-    max-width: 200px;
+    width: 200px;
+    left: -20px;
+  }
+  .display-box {
+    margin: auto;
+    display: flexbox;
+    height: 320px;
+    width: 400px;
+  }
+  .add-to-basket-btn {
+    left: -190px;
+  }
+  .sizes-selection-box {
+    left: -195px;
+  }
+}
+
+@media only screen and (min-width: 767px) {
+  nav {
+    min-height: 50px;
+  }
+  .display-box {
+    margin: auto;
+    display: flexbox;
+    margin-left: -40px;
+    height: 320px;
+    width: 500px;
+  }
+  .description {
+    width: 250px;
+    left: 10px;
+  }
+  .add-to-basket-btn {
+    left: -240px;
+  }
+  .sizes-selection-box {
+    left: -240px;
   }
 }
 
@@ -33,7 +66,7 @@ body {
 
 #wrap {
   margin: auto;
-  width: 500px;
+  width: 400px;
   height: fit-content;
   padding-top: 25px;
   padding-bottom: 25px;
@@ -68,7 +101,7 @@ nav {
   margin-top: -10px;
   top: 0px;
   height: 50px;
-  gap: 10px;
+  gap: 8px;
   z-index: 5;
   background-color: var(--white);
   font-weight: bold;
@@ -100,10 +133,7 @@ p {
 }
 
 .display-box {
-  margin: auto;
-  display: flexbox;
   height: 320px;
-  width: 500px;
   font-family: "Playfair Display";
   /*box-shadow: rgba(228, 228, 228, 0.35) 0px 5px 15px;*/
   font-size: smaller;
@@ -157,13 +187,12 @@ img:hover ~ .description {
   justify-content: center;
   align-items: center;
   position: relative;
-  margin-left: 210px;
+  margin-left: 205px;
   top: -95px;
   text-align: center;
-  width: 250px;
   height: 70px;
-  opacity: 0;
   font-size: 1.1em;
+  opacity: 0;
 }
 
 .display-box-text {
@@ -195,7 +224,6 @@ img:hover ~ .description {
   display: flex;
   position: relative;
   top: 185px;
-  left: -240px;
   width: 130px;
   height: 40px;
   text-align: center;
@@ -233,7 +261,6 @@ img:hover ~ .description {
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  padding-top: 40px;
   margin-bottom: 10px;
   max-width: 400px;
   color: var(--laurel);
@@ -274,7 +301,6 @@ img:hover ~ .description {
   display: flex;
   position: relative;
   top: 180px;
-  left: -245px;
   width: fit-content;
   height: 20px;
 }
