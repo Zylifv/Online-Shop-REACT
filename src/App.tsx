@@ -110,7 +110,7 @@ export default function List() {
       basket.length = 0;
       setBasketTotal(0);
       setItemTotal(0);
-      updateBasket(basket);
+      updateBasket([]);
       return;
     }
   };
