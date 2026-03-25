@@ -1,37 +1,36 @@
 import "./styles.css";
 import { useState, useEffect } from "react";
-import { products } from "./products";
+import { ProductsArray } from "./products";
+import ItemTotal from "./ItemTotal";
+import CurrentBasket from "./CurrentBasket";
+import SelectedSize from "./SelectedSize";
+import SetVisibility from "./Visibility";
+import CurrentItem from "./CurrentItem";
+import CurrentOrders from "./CurrentOrders";
 
-let initialValues = products;
-let basket: any = [];
-let orders: any = [];
+let initialValues = ProductsArray;
 
 export default function List() {
-  const [itemTotal, setItemTotal] = useState(0);
+  const { resetTotal, increaseItemTotal } = ItemTotal();
   const [products, setProducts] = useState(initialValues);
-  const [currItem, setCurrItem] = useState({
-    product: "",
-    price: "",
-    size: "",
-    code: "",
-  });
-  const [currBasket, updateBasket] = useState([] as any[]);
-  const [selectedSize, setSelectedSize] = useState("");
-  const [vis, setVis] = useState(false);
+  const { currItem, setCurrItem } = CurrentItem();
+  const { currBasket, updateBasket } = CurrentBasket();
+  const { currentOrders, updateCurrentOrders } = CurrentOrders();
+  const { selectedSize, setSelectedSize } = SelectedSize();
+  const { vis, setVis } = SetVisibility();
   const [ordersVis, setOrdersVis] = useState(false);
   const [basketTotal, setBasketTotal] = useState(0);
 
   useEffect(() => {
-    console.log("Current size: ", selectedSize);
-  }, [selectedSize]);
+    console.log("Current basket: ", currBasket);
+  }, [currBasket]);
 
   //updates all relevant info when the user clicks "add to basket" button and prevents user from adding items without choosing a size
-  const handleClick = () => {
+  const HandleClick = () => {
     if (selectedSize !== "") {
-      setItemTotal(itemTotal + 1);
+      increaseItemTotal;
       //add items to basket to view
       updateBasket((currBasket) => [...currBasket, currItem]);
-      basket.push(currItem);
     } else {
       alert("Please select a size.");
     }
@@ -58,18 +57,17 @@ export default function List() {
 
   //creates a paragraph element that gets put into the orders Div so the user can see what orders are outstanding
   const Orders = () => {
-    const currentOrders = orders.map((ord: any, i: number) => (
+    const currOrders = currentOrders.map((ord: any, i: number) => (
       <p key={i} className="customer-orders">
         {i + 1}: #{ord}
       </p>
     ));
-    return <div>{currentOrders}</div>;
+    return <div>{currOrders}</div>;
   };
 
-  //displays each item the use currently has in their basket
-  const displayBasket = () => {
+  const DisplayBasket = () => {
     if (vis) {
-      if (basket.length <= 0) {
+      if (currBasket.length <= 0) {
         return (
           <p className="customer-orders">
             You do not currently have any item(s) in your basket.
@@ -84,7 +82,7 @@ export default function List() {
   //WIP - will update orders
   const displayOrders = () => {
     if (ordersVis) {
-      if (orders.length <= 0) {
+      if (currentOrders.length <= 0) {
         return (
           <p className="customer-orders">
             You do not currently have any orders.
@@ -106,10 +104,9 @@ export default function List() {
       return;
     } else {
       alert(`Order accepted! Your order number: #${currOrderNum}`);
-      orders.push(currOrderNum);
-      basket.length = 0;
+      updateCurrentOrders((currentOrders) => [...currentOrders, currOrderNum]);
       setBasketTotal(0);
-      setItemTotal(0);
+      resetTotal;
       updateBasket([]);
       return;
     }
@@ -117,7 +114,9 @@ export default function List() {
 
   //shows the user how much their order currently totals up to
   const updateBasketTotal = (val: number) => {
-    setBasketTotal(Number((basketTotal + val).toFixed(2)));
+    if (selectedSize !== "") {
+      setBasketTotal(Number((basketTotal + val).toFixed(2)));
+    }
   };
 
   //reduces the available quantity of a specific product
@@ -203,7 +202,7 @@ export default function List() {
         className="add-to-basket-btn"
         value={selectedSize}
         onClick={() => {
-          handleClick();
+          HandleClick();
           reduceQuantity(prod.code);
           updateBasketTotal(prod.price);
         }}
@@ -241,16 +240,15 @@ export default function List() {
           </a>
           <a href="#contact-us">Contact</a>
           <a
-            href="#basket"
             id="basket"
             onClick={() => {
               setVis(!vis);
-              displayBasket;
+              DisplayBasket;
             }}
           >
             Basket
           </a>
-          <p id="basket-total">{itemTotal}</p>
+          <p id="basket-total">{currBasket.length}</p>
           <a id="checkout">
             <button id="checkout-btn" onClick={() => completeOrder()}>
               Checkout
@@ -264,7 +262,7 @@ export default function List() {
             <div id="current-basket">
               <h3>Current Basket:</h3>
               <p id="basket-total-amount">Total: £{basketTotal}</p>
-              <div id="current-basket-items">{displayBasket()}</div>
+              <div id="current-basket-items">{DisplayBasket()}</div>
             </div>
           )}
           <div className="product-div">{productsList}</div>

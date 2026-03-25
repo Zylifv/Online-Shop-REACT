@@ -1,4 +1,4 @@
-export const products = [
+export const ProductsArray = [
   {
     product: "White T-shirt",
     price: 29.99,
