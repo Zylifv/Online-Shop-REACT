@@ -4,10 +4,12 @@
     ],
     "compilerOptions": {
         "strict": true,
+        "paths": {
+            "react": [ "./node_modules/@types/react" ]
+          },
         "esModuleInterop": true,
         "module": "commonjs",
     "resolveJsonModule": true,
-    "esModuleInterop": true,
         "lib": [
             "dom",
             "esnext"

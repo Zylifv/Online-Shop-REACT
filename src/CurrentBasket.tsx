@@ -1,8 +1,11 @@
 import { useState } from "react";
 
-const CurrentBasket = () => {
+export default function CurrentBasket() {
   const [currBasket, updateBasket] = useState([] as any[]);
-  return { currBasket, updateBasket };
-};
 
-export default CurrentBasket;
+  function addToBasket(val: any) {
+    return updateBasket((currBasket) => [...currBasket, val]);
+  }
+
+  return { currBasket, updateBasket, addToBasket };
+}

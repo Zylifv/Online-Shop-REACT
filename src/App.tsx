@@ -14,9 +14,10 @@ export default function List() {
   const { resetTotal, increaseItemTotal } = ItemTotal();
   const [products, setProducts] = useState(initialValues);
   const { currItem, setCurrItem } = CurrentItem();
-  const { currBasket, updateBasket } = CurrentBasket();
+  const { currBasket, updateBasket, addToBasket } = CurrentBasket();
   const { currentOrders, updateCurrentOrders } = CurrentOrders();
-  const { selectedSize, setSelectedSize } = SelectedSize();
+  const { selectedSize, updateSelectedSize, resetSelectedSize } =
+    SelectedSize();
   const { vis, setVis } = SetVisibility();
   const [ordersVis, setOrdersVis] = useState(false);
   const [basketTotal, setBasketTotal] = useState(0);
@@ -30,11 +31,11 @@ export default function List() {
     if (selectedSize !== "") {
       increaseItemTotal;
       //add items to basket to view
-      updateBasket((currBasket) => [...currBasket, currItem]);
+      addToBasket(currItem);
     } else {
       alert("Please select a size.");
     }
-    setSelectedSize("");
+    resetSelectedSize;
   };
 
   //generates a random order number
@@ -55,17 +56,7 @@ export default function List() {
     return <div>{basketDivs}</div>;
   };
 
-  //creates a paragraph element that gets put into the orders Div so the user can see what orders are outstanding
-  const Orders = () => {
-    const currOrders = currentOrders.map((ord: any, i: number) => (
-      <p key={i} className="customer-orders">
-        {i + 1}: #{ord}
-      </p>
-    ));
-    return <div>{currOrders}</div>;
-  };
-
-  const DisplayBasket = () => {
+  const displayBasket = () => {
     if (vis) {
       if (currBasket.length <= 0) {
         return (
@@ -76,7 +67,19 @@ export default function List() {
       } else {
         return <Divs />;
       }
+    } else {
+      return null;
     }
+  };
+
+  //creates a paragraph element that gets put into the orders Div so the user can see what orders are outstanding
+  const Orders = () => {
+    const currOrders = currentOrders.map((ord: any, i: number) => (
+      <p key={i} className="customer-orders">
+        {i + 1}: #{ord}
+      </p>
+    ));
+    return <div>{currOrders}</div>;
   };
 
   //WIP - will update orders
@@ -149,7 +152,7 @@ export default function List() {
           id={prod.sizes[0]}
           value={prod.sizes[0]}
           onClick={() => {
-            setSelectedSize(`${prod.sizes[0]}`);
+            updateSelectedSize(`${prod.sizes[0]}`);
             setCurrItem({
               ...currItem,
               product: `${prod.product}`,
@@ -167,7 +170,7 @@ export default function List() {
           id={prod.sizes[1]}
           value={prod.sizes[1]}
           onClick={() => {
-            setSelectedSize(prod.sizes[1]);
+            updateSelectedSize(prod.sizes[1]);
             setCurrItem({
               ...currItem,
               product: `${prod.product}`,
@@ -185,7 +188,7 @@ export default function List() {
           id={prod.sizes[2]}
           value={prod.sizes[2]}
           onClick={() => {
-            setSelectedSize(prod.sizes[2]);
+            updateSelectedSize(prod.sizes[2]);
             setCurrItem({
               ...currItem,
               product: `${prod.product}`,
@@ -243,7 +246,7 @@ export default function List() {
             id="basket"
             onClick={() => {
               setVis(!vis);
-              DisplayBasket;
+              displayBasket;
             }}
           >
             Basket
@@ -262,7 +265,7 @@ export default function List() {
             <div id="current-basket">
               <h3>Current Basket:</h3>
               <p id="basket-total-amount">Total: £{basketTotal}</p>
-              <div id="current-basket-items">{DisplayBasket()}</div>
+              <div id="current-basket-items">{displayBasket()}</div>
             </div>
           )}
           <div className="product-div">{productsList}</div>

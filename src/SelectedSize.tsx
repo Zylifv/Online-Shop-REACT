@@ -1,8 +1,15 @@
 import { useState } from "react";
 
-const SelectedSize = () => {
+export default function SelectedSize() {
   const [selectedSize, setSelectedSize] = useState("");
-  return { selectedSize, setSelectedSize };
-};
 
-export default SelectedSize;
+  function resetSelectedSize() {
+    return setSelectedSize("");
+  }
+
+  function updateSelectedSize(val: string) {
+    return setSelectedSize(val);
+  }
+
+  return { selectedSize, resetSelectedSize, updateSelectedSize };
+}
