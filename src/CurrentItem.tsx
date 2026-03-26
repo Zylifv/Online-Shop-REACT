@@ -5,7 +5,8 @@ const CurrentItem = () => {
     product: "",
     price: "",
     size: "",
-    code: "",
+    code: 0,
+    basket: 0,
   });
   return { currItem, setCurrItem };
 };

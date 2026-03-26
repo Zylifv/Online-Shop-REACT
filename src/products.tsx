@@ -8,7 +8,8 @@ export const ProductsArray = [
       ", designed for comfort and versatility in your day to day activites.",
     quantity: 5,
     sizes: ["S", "M", "L"],
-    code: "1",
+    code: 1,
+    basket: 0,
   },
   {
     product: "Brown Boots",
@@ -19,7 +20,8 @@ export const ProductsArray = [
       " are made for walking... hiking, exploring and sending the message of a trend that is timeless.",
     quantity: 2,
     sizes: ["8", "9", "10"],
-    code: "2",
+    code: 2,
+    basket: 0,
   },
   {
     product: "Wristwatch",
@@ -29,6 +31,7 @@ export const ProductsArray = [
     description2: " that will never fail you, regardless of the terrain.",
     quantity: 1,
     sizes: ["S", "M", "L"],
-    code: "3",
+    code: 3,
+    basket: 0,
   },
 ];

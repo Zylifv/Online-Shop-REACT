@@ -1,18 +1,17 @@
 import "./styles.css";
 import { useState, useEffect } from "react";
-import { ProductsArray } from "./products";
+import ProductsArray from "./Prods";
 import ItemTotal from "./ItemTotal";
 import CurrentBasket from "./CurrentBasket";
 import SelectedSize from "./SelectedSize";
 import SetVisibility from "./Visibility";
 import CurrentItem from "./CurrentItem";
 import CurrentOrders from "./CurrentOrders";
-
-let initialValues = ProductsArray;
+import Button from "./Button";
 
 export default function List() {
   const { resetTotal, increaseItemTotal } = ItemTotal();
-  const [products, setProducts] = useState(initialValues);
+  const { products, setProducts, updateProductsArray } = ProductsArray();
   const { currItem, setCurrItem } = CurrentItem();
   const { currBasket, updateBasket, addToBasket } = CurrentBasket();
   const { currentOrders, updateCurrentOrders } = CurrentOrders();
@@ -23,15 +22,28 @@ export default function List() {
   const [basketTotal, setBasketTotal] = useState(0);
 
   useEffect(() => {
-    console.log("Current basket: ", currBasket);
-  }, [currBasket]);
+    console.log("Current item: ", currItem);
+  }, [currItem]);
+
+  useEffect(() => {
+    products.map(
+      (item) => {
+        console.log("Current basket: ", currBasket);
+      },
+      [currBasket]
+    );
+  });
+
+  useEffect(() => {
+    console.log("ProductsArray: ", products);
+  }, [products]);
 
   //updates all relevant info when the user clicks "add to basket" button and prevents user from adding items without choosing a size
   const HandleClick = () => {
     if (selectedSize !== "") {
       increaseItemTotal;
       //add items to basket to view
-      addToBasket(currItem);
+      addToBasket({ ...currItem, basket: currItem.basket + 1 });
     } else {
       alert("Please select a size.");
     }
@@ -45,7 +57,7 @@ export default function List() {
 
   //creates a paragraph element that gets put into the basket Div so the user can see whats in their basket
   const Divs = () => {
-    const basketDivs = currBasket.map((item, i) => (
+    const basketDivs = [...currBasket].map((item, i) => (
       <p key={i}>
         {item.product}: Size: {item.size} - Price: £{item.price}
         <button className="discard-btn" id={`${item.code}-btn${i}`}>
@@ -137,6 +149,18 @@ export default function List() {
     }
   };
 
+  const updateProdArray = (code: number) => {
+    setProducts(
+      products.map((product) => {
+        if (product.code == code) {
+          return { ...product, basket: product.basket + 1 };
+        } else {
+          return product;
+        }
+      })
+    );
+  };
+
   //produces a list of products available to buy and their respective info such as price, quantity, sizes etc
   const productsList = products.map((prod) => (
     <div className="display-box" id={(prod as any).code} key={prod.code}>
@@ -159,6 +183,7 @@ export default function List() {
               price: `${prod.price}`,
               size: prod.sizes[0],
               code: prod.code,
+              basket: prod.basket,
             });
           }}
         >
@@ -204,14 +229,15 @@ export default function List() {
       <button
         className="add-to-basket-btn"
         value={selectedSize}
+        disabled={prod.quantity == 0}
         onClick={() => {
           HandleClick();
           reduceQuantity(prod.code);
+          updateProdArray(currItem.code); // - doesn't work here but does on the basket tab at the top?
           updateBasketTotal(prod.price);
         }}
-        disabled={prod.quantity == 0}
       >
-        Add to basket
+        Add to Basket
       </button>
       <div className="description">
         {prod.description}
