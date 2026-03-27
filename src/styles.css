@@ -1,4 +1,21 @@
 @import url(https://fonts.googleapis.com/css?family=Playfair+Display);
+#box {
+  height: 1500px;
+  width: 100vw;
+  background: green;
+}
+
+#box2 {
+  position: fixed;
+  top: 600px;
+  height: 200px;
+  width: 100vw;
+  background: red;
+}
+
+#box2-hidden {
+  display: none;
+}
 
 :root {
   --white: #fbfbfb;
@@ -17,7 +34,7 @@
   }
   .description {
     width: 200px;
-    left: -20px;
+    left: -10px;
   }
   .display-box {
     margin: auto;
@@ -36,6 +53,9 @@
 @media only screen and (min-width: 767px) {
   nav {
     min-height: 50px;
+    width: 600px;
+    position: relative;
+    left: -90px;
   }
   .display-box {
     margin: auto;
@@ -54,6 +74,10 @@
   .sizes-selection-box {
     left: -240px;
   }
+}
+
+.App {
+  font-family: "Playfair Display";
 }
 
 body {
@@ -75,6 +99,7 @@ body {
   background-color: var(--white);
   border: var(--off-white);
   border-radius: 15px;
+  font-family: "Playfair Display";
 }
 
 h1,
@@ -87,7 +112,6 @@ h2 {
 
 #items-wrap {
   display: grid;
-  font-family: "Playfair Display";
 }
 
 .nav-bar {
@@ -97,8 +121,10 @@ h2 {
 
 nav {
   margin: auto;
+  display: flex;
   text-align: center;
   margin-top: -10px;
+  margin-bottom: 20px;
   top: 0px;
   height: 50px;
   gap: 8px;
@@ -134,7 +160,6 @@ p {
 
 .display-box {
   height: 320px;
-  font-family: "Playfair Display";
   /*box-shadow: rgba(228, 228, 228, 0.35) 0px 5px 15px;*/
   font-size: smaller;
 }
@@ -145,6 +170,7 @@ p {
   background: var(--white);
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+
   /*border-bottom: 5px solid #5a5a5c; rgb(127, 127, 127, 0.8);
   box-shadow: rgb(127, 127, 127, 0.8) 0px 3px 8px;*/
 }
@@ -177,21 +203,21 @@ p {
   transition: transform 0.5s;
 }
 
-img:hover ~ .description {
+.display-box:hover > .description {
   animation: move 1s 1 forwards;
 }
 
 .description {
   margin: auto;
-  display: inline-block;
+  display: flex-box;
   justify-content: center;
   align-items: center;
   position: relative;
-  margin-left: 205px;
-  top: -95px;
+  margin-left: 195px;
+  top: 0px;
   text-align: center;
-  height: 70px;
-  font-size: 1.1em;
+  height: 80px;
+  font-size: 1em;
   opacity: 0;
 }
 
@@ -239,18 +265,21 @@ img:hover ~ .description {
 }
 
 .add-to-basket-btn:hover,
-.sizes-selection-box > button:hover {
+.sizes-selection-box > button:hover,
+.size-selection:hover {
   background-color: var(--white);
   color: var(--laurel);
   box-shadow: var(--laurel) 0px 1px 3px, var(--laurel) 0px 1px 2px;
 }
 
 .add-to-basket-btn:active,
-.sizes-selection-box > button:active {
+.sizes-selection-box > button:active,
+.size-selection:active {
   transform: translate(0px, 2px);
 }
 
-.sizes-selection-box > button:focus {
+.sizes-selection-box > button:focus,
+.size-selection:focus {
   background-color: var(--laurel);
   color: var(--white);
 }
@@ -329,13 +358,29 @@ img:hover ~ .description {
   margin: 0px 3px 0px 3px;
 }
 
+.size-selection {
+  text-align: center;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--off-white);
+  color: var(--black);
+  border: none;
+  width: 24px;
+  height: fit-content;
+  border-radius: 5px;
+  border-bottom: 2px solid var(--slate);
+  box-shadow: var(--off-white) 0px 1px 3px, var(--off-white) 0px 1px 2px;
+  margin: 0px 3px 0px 3px;
+}
+
 #current-basket,
 #current-orders-dropdown {
   margin: auto;
   position: absolute;
   left: 0;
   right: 0;
-  top: -5px;
+  top: 150px;
   margin-inline: auto;
   width: 400px;
   height: 220px;
